@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -6,16 +6,19 @@
     <title>Nile Readers</title>
     <style>
         :root {
-            --primary: #1e3a8a;
-            --secondary: #0284c7;
-            --bg: #f0fdf4;
-            --card-bg: #ffffff;
-            --text: #1f2937;
+            --primary: #0f3460;
+            --secondary: #1f4068;
+            --bg-gradient: linear-gradient(135deg, #e6f2ff 0%, #fcf7e8 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text: #1a202c;
+            --accent-gold: #cfa846;
+            --accent-green: #2d6a4f;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text);
             margin: 0;
             padding: 20px;
@@ -27,7 +30,20 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 20px;
-            border-bottom: 2px solid var(--secondary);
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 70px;
+            width: auto;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .lang-btn {
@@ -38,6 +54,7 @@
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .container {
@@ -48,43 +65,106 @@
         .hero {
             text-align: center;
             margin: 40px 0;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .encouragement-box {
+            background: linear-gradient(135deg, #e0f2fe, #fcf7e8);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--accent-gold);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .encouragement-box.rtl {
+            border-left: none;
+            border-right: 5px solid var(--accent-gold);
         }
 
         .tracker-box {
             background: var(--card-bg);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
             text-align: center;
             margin-bottom: 40px;
+            border: 1px solid rgba(207, 168, 70, 0.2);
         }
 
         .river-map {
             width: 100%;
-            height: 15px;
-            background: #e0f2fe;
+            height: 20px;
+            background: #dbeafe;
             border-radius: 10px;
             margin: 20px 0;
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .boat-progress {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--secondary), #38bdf8);
+            background: linear-gradient(90deg, #0284c7, #38bdf8);
             transition: width 0.5s ease;
         }
 
         .btn-track {
-            background-color: #22c55e;
+            background-color: var(--accent-green);
             color: white;
             border: none;
             padding: 12px 25px;
             font-size: 16px;
             border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 4px 10px rgba(45, 106, 79, 0.3);
+            font-weight: bold;
+        }
+
+        .booking-box {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border: 1px solid rgba(207, 168, 70, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #fff;
+        }
+
+        .btn-book {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(15, 52, 96, 0.2);
         }
 
         .bookshelf {
@@ -96,10 +176,11 @@
 
         .book-card {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            border-top: 4px solid var(--primary);
         }
 
         .book-icon {
@@ -112,13 +193,22 @@
 
 <div class="container">
     <header>
-        <h1 id="app-title">📚 Nile Readers</h1>
+        <div class="logo-area">
+            <img src="logo.jpeg" alt="Nile Readers Logo" class="logo-img" onerror="this.style.display='none'">
+            <h1 id="app-title">📚 Nile Readers</h1>
+        </div>
         <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle">العربية</button>
     </header>
 
     <section class="hero">
         <h2 id="hero-tagline">Read. Speak. Grow.</h2>
         <p id="hero-desc">Helping young readers find their voice in English through self-paced book adventures.</p>
+    </section>
+
+    <section class="encouragement-box" id="motive-box">
+        <h4 id="motive-title">✨ Weekly Inspiration</h4>
+        <p><strong>For Children:</strong> Every page you read opens a new door to an exciting world! Keep going, your mind is growing stronger with every single word.</p>
+        <p><strong>For Parents:</strong> Reading together creates lifelong bonds. By encouraging them today, you are building their path to a brighter, more confident future.</p>
     </section>
 
     <section class="tracker-box">
@@ -128,6 +218,28 @@
             <div class="boat-progress" id="river-bar"></div>
         </div>
         <button class="btn-track" onclick="addPage()" id="track-btn">I read a page! +1</button>
+    </section>
+
+    <section class="booking-box">
+        <h3 id="booking-title">🗓️ Book a Monthly Session</h3>
+        <p id="booking-desc">Parents can secure a spot for their child's monthly check-in here.</p>
+        <form onsubmit="handleBooking(event)">
+            <div class="form-group">
+                <label id="lbl-name" for="parent-name">Parent's Name:</label>
+                <input type="text" id="parent-name" required>
+            </div>
+            <div class="form-group">
+                <label id="lbl-child" for="child-name">Child's Name & Age:</label>
+                <input type="text" id="child-name" placeholder="e.g. Adam, Age 10" required>
+            </div>
+            <div class="form-group">
+                <label id="lbl-month" for="session-month">Select Month:</label>
+                <select id="session-month">
+                    <option value="Next Upcoming Month">Next Available Month</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-book" id="book-btn">Send Booking Request</button>
+        </form>
     </section>
 
     <h3 id="shelf-title">Find Your Next Adventure</h3>
@@ -151,20 +263,27 @@
 </div>
 
 <script>
-    // App State
     let currentLang = 'en';
     let pagesRead = parseInt(localStorage.getItem('nilePages')) || 0;
 
-    // Translations Dictionary
     const translations = {
         en: {
             title: "📚 Nile Readers",
             toggle: "العربية",
             tagline: "Read. Speak. Grow.",
             desc: "Helping young readers find their voice in English through self-paced book adventures.",
+            motiveTitle: "✨ Weekly Inspiration",
+            motiveContent: `<p><strong>For Children:</strong> Every page you read opens a new door to an exciting world! Keep going, your mind is growing stronger with every single word.</p>
+                            <p><strong>For Parents:</strong> Reading together creates lifelong bonds. By encouraging them today, you are building their path to a brighter, more confident future.</p>`,
             trackerTitle: "🚢 Your Nile Journey",
             pagesLabel: "Pages read today: ",
             trackBtn: "I read a page! +1",
+            bookingTitle: "🗓️ Book a Monthly Session",
+            bookingDesc: "Parents can secure a spot for their child's monthly check-in here.",
+            lblName: "Parent's Name:",
+            lblChild: "Child's Name & Age:",
+            lblMonth: "Select Month:",
+            bookBtn: "Send Booking Request",
             shelfTitle: "Find Your Next Adventure"
         },
         ar: {
@@ -172,36 +291,59 @@
             toggle: "English",
             tagline: "اقرأ. تحدث. انطلق.",
             desc: "نساعد الأطفال على بناء ثقتهم باللغة الإنجليزية من خلال مغامرات قراءة ممتعة ومستقلة.",
+            motiveTitle: "✨ إلهام الأسبوع",
+            motiveContent: `<p><strong>للأطفال:</strong> كل صفحة تقرأها تفتح لك باباً لعالم مشوق! استمر، فعقلك يصبح أقوى مع كل كلمة.</p>
+                            <p><strong>لأولياء الأمور:</strong> القراءة معاً تصنع روابط تدوم مدى الحياة. بتشجيعكم لهم اليوم، تمهدون طريقهم نحو مستقبل أكثر إشراقاً وثقة.</p>`,
             trackerTitle: "🚢 رحلتك في نهر النيل",
             pagesLabel: "الصفحات التي قرأتها اليوم: ",
             trackBtn: "لقد قرأت صفحة أخرى! +١",
+            bookingTitle: "🗓️ حجز الجلسة الشهرية",
+            bookingDesc: "يمكن لأولياء الأمور حجز مقعد لطفلهم للمتابعة الشهرية هنا.",
+            lblName: "اسم ولي الأمر:",
+            lblChild: "اسم وعمر الطفل:",
+            lblMonth: "اختر الشهر:",
+            bookBtn: "إرسال طلب الحجز",
             shelfTitle: "ابحث عن مغامرتك القادمة"
         }
     };
 
-    // Initialize UI
     document.getElementById('page-count').innerText = pagesRead;
     updateRiverBar();
 
-    // Language Toggle logic
     function toggleLanguage() {
         currentLang = currentLang === 'en' ? 'ar' : 'en';
         
-        // Update Layout direction
-        document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        const body = document.body;
+        const motiveBox = document.getElementById('motive-box');
         
-        // Update Texts
+        if(currentLang === 'ar') {
+            body.dir = 'rtl';
+            motiveBox.classList.add('rtl');
+        } else {
+            body.dir = 'ltr';
+            motiveBox.classList.remove('rtl');
+        }
+        
         document.getElementById('app-title').innerText = translations[currentLang].title;
         document.getElementById('lang-toggle').innerText = translations[currentLang].toggle;
         document.getElementById('hero-tagline').innerText = translations[currentLang].tagline;
         document.getElementById('hero-desc').innerText = translations[currentLang].desc;
+        document.getElementById('motive-title').innerText = translations[currentLang].motiveTitle;
+        motiveBox.innerHTML = `<h4 id="motive-title">${translations[currentLang].motiveTitle}</h4>` + translations[currentLang].motiveContent;
         document.getElementById('tracker-title').innerText = translations[currentLang].trackerTitle;
         document.getElementById('pages-label').innerHTML = translations[currentLang].pagesLabel + `<span id="page-count">${pagesRead}</span>`;
         document.getElementById('track-btn').innerText = translations[currentLang].trackBtn;
+        
+        document.getElementById('booking-title').innerText = translations[currentLang].bookingTitle;
+        document.getElementById('booking-desc').innerText = translations[currentLang].bookingDesc;
+        document.getElementById('lbl-name').innerText = translations[currentLang].lblName;
+        document.getElementById('lbl-child').innerText = translations[currentLang].lblChild;
+        document.getElementById('lbl-month').innerText = translations[currentLang].lblMonth;
+        document.getElementById('book-btn').innerText = translations[currentLang].bookBtn;
+        
         document.getElementById('shelf-title').innerText = translations[currentLang].shelfTitle;
     }
 
-    // Tracker logic
     function addPage() {
         pagesRead++;
         document.getElementById('page-count').innerText = pagesRead;
@@ -210,9 +352,22 @@
     }
 
     function updateRiverBar() {
-        // Boat hits max at 100 pages for demonstration, resets loop or fills bar
         let percentage = (pagesRead % 100); 
         document.getElementById('river-bar').style.width = percentage + '%';
+    }
+
+    function handleBooking(event) {
+        event.preventDefault();
+        
+        const parentName = document.getElementById('parent-name').value;
+        const childName = document.getElementById('child-name').value;
+        const selectedMonth = document.getElementById('session-month').value;
+        
+        const emailTo = "yusufmhamour@gmail.com,Nilereaders.qa@gmail.com";
+        const subject = encodeURIComponent("New Nile Readers Monthly Booking Request");
+        const bodyText = encodeURIComponent(`Hello Nile Readers Team,\n\nI would like to book a monthly session.\n\nParent Name: ${parentName}\nChild Details: ${childName}\nRequested Period: ${selectedMonth}\n\nThank you!`);
+        
+        window.location.href = `mailto:${emailTo}?subject=${subject}&body=${bodyText}`;
     }
 </script>
 
