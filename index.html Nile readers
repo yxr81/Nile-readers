@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nile Readers</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0284c7;
+            --bg: #f0fdf4;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            transition: direction 0.3s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .lang-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .tracker-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .river-map {
+            width: 100%;
+            height: 15px;
+            background: #e0f2fe;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .boat-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--secondary), #38bdf8);
+            transition: width 0.5s ease;
+        }
+
+        .btn-track {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+        }
+
+        .bookshelf {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .book-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .book-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1 id="app-title">📚 Nile Readers</h1>
+        <button class="lang-btn" onclick="toggleLanguage()" id="lang-toggle">العربية</button>
+    </header>
+
+    <section class="hero">
+        <h2 id="hero-tagline">Read. Speak. Grow.</h2>
+        <p id="hero-desc">Helping young readers find their voice in English through self-paced book adventures.</p>
+    </section>
+
+    <section class="tracker-box">
+        <h3 id="tracker-title">🚢 Your Nile Journey</h3>
+        <p id="pages-label">Pages read today: <span id="page-count">0</span></p>
+        <div class="river-map">
+            <div class="boat-progress" id="river-bar"></div>
+        </div>
+        <button class="btn-track" onclick="addPage()" id="track-btn">I read a page! +1</button>
+    </section>
+
+    <h3 id="shelf-title">Find Your Next Adventure</h3>
+    <section class="bookshelf">
+        <div class="book-card">
+            <div class="book-icon">🌳</div>
+            <h4>The Secret Treehouse</h4>
+            <p>Age 9+ • Adventure</p>
+        </div>
+        <div class="book-card">
+            <div class="book-icon">🌙</div>
+            <h4>Across the Moon</h4>
+            <p>Age 10+ • Mystery</p>
+        </div>
+        <div class="book-card">
+            <div class="book-icon">🤖</div>
+            <h4>My Robot Friend</h4>
+            <p>Age 9+ • Sci-Fi</p>
+        </div>
+    </section>
+</div>
+
+<script>
+    // App State
+    let currentLang = 'en';
+    let pagesRead = parseInt(localStorage.getItem('nilePages')) || 0;
+
+    // Translations Dictionary
+    const translations = {
+        en: {
+            title: "📚 Nile Readers",
+            toggle: "العربية",
+            tagline: "Read. Speak. Grow.",
+            desc: "Helping young readers find their voice in English through self-paced book adventures.",
+            trackerTitle: "🚢 Your Nile Journey",
+            pagesLabel: "Pages read today: ",
+            trackBtn: "I read a page! +1",
+            shelfTitle: "Find Your Next Adventure"
+        },
+        ar: {
+            title: "📚 قراء النيل",
+            toggle: "English",
+            tagline: "اقرأ. تحدث. انطلق.",
+            desc: "نساعد الأطفال على بناء ثقتهم باللغة الإنجليزية من خلال مغامرات قراءة ممتعة ومستقلة.",
+            trackerTitle: "🚢 رحلتك في نهر النيل",
+            pagesLabel: "الصفحات التي قرأتها اليوم: ",
+            trackBtn: "لقد قرأت صفحة أخرى! +١",
+            shelfTitle: "ابحث عن مغامرتك القادمة"
+        }
+    };
+
+    // Initialize UI
+    document.getElementById('page-count').innerText = pagesRead;
+    updateRiverBar();
+
+    // Language Toggle logic
+    function toggleLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
+        
+        // Update Layout direction
+        document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        
+        // Update Texts
+        document.getElementById('app-title').innerText = translations[currentLang].title;
+        document.getElementById('lang-toggle').innerText = translations[currentLang].toggle;
+        document.getElementById('hero-tagline').innerText = translations[currentLang].tagline;
+        document.getElementById('hero-desc').innerText = translations[currentLang].desc;
+        document.getElementById('tracker-title').innerText = translations[currentLang].trackerTitle;
+        document.getElementById('pages-label').innerHTML = translations[currentLang].pagesLabel + `<span id="page-count">${pagesRead}</span>`;
+        document.getElementById('track-btn').innerText = translations[currentLang].trackBtn;
+        document.getElementById('shelf-title').innerText = translations[currentLang].shelfTitle;
+    }
+
+    // Tracker logic
+    function addPage() {
+        pagesRead++;
+        document.getElementById('page-count').innerText = pagesRead;
+        localStorage.setItem('nilePages', pagesRead);
+        updateRiverBar();
+    }
+
+    function updateRiverBar() {
+        // Boat hits max at 100 pages for demonstration, resets loop or fills bar
+        let percentage = (pagesRead % 100); 
+        document.getElementById('river-bar').style.width = percentage + '%';
+    }
+</script>
+
+</body>
+</html>
